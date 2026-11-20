@@ -98,6 +98,53 @@ public sealed class DspTests
     }
 
     [Fact]
+    public void FormantShifterMovesTheSpectralEnvelopeUp()
+    {
+        const int rate = 48000;
+        float[] input = new float[rate];
+        for (int i = 0; i < input.Length; i++)
+        {
+            float t = i / (float)rate;
+            float value = 0f;
+            for (int harmonic = 4; harmonic <= 40; harmonic++)
+            {
+                float frequency = harmonic * 100f;
+                float envelope = MathF.Exp(-MathF.Pow((frequency - 1000f) / 300f, 2f));
+                value += envelope * MathF.Sin(2f * MathF.PI * frequency * t);
+            }
+
+            input[i] = value * 0.05f;
+        }
+
+        FormantShifter shifter = new();
+        shifter.Configure(7f);
+        float[] output = new float[input.Length];
+        for (int i = 0; i < input.Length; i++)
+        {
+            output[i] = shifter.Process(input[i]);
+        }
+
+        double low = Magnitude(output, 1000f, 8192);
+        double high = Magnitude(output, 1500f, 8192);
+        Assert.True(high > low * 1.1, $"1 kHz={low:0.000}, 1.5 kHz={high:0.000}");
+    }
+
+    [Fact]
+    public void FormantShifterBypassesAtZeroAndStaysFinite()
+    {
+        FormantShifter shifter = new();
+        shifter.Configure(0f);
+        Assert.Equal(0.3f, shifter.Process(0.3f));
+
+        shifter.Configure(7f);
+        for (int i = 0; i < 48000; i++)
+        {
+            float value = shifter.Process(MathF.Sin(i * 0.05f) * 0.4f);
+            Assert.True(float.IsFinite(value));
+        }
+    }
+
+    [Fact]
     public void PitchShifterRaisesThePerceivedPitch()
     {
         PitchShifter shifter = new();
@@ -295,5 +342,20 @@ public sealed class DspTests
         }
 
         return peak;
+    }
+
+    private static double Magnitude(float[] samples, float frequency, int count)
+    {
+        double real = 0.0;
+        double imaginary = 0.0;
+        int from = Math.Max(0, samples.Length - count);
+        for (int i = from; i < samples.Length; i++)
+        {
+            double angle = 2.0 * Math.PI * frequency * (i - from) / 48000.0;
+            real += samples[i] * Math.Cos(angle);
+            imaginary -= samples[i] * Math.Sin(angle);
+        }
+
+        return Math.Sqrt((real * real) + (imaginary * imaginary));
     }
 }

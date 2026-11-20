@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Recording · Sonus.NET Guide</title>
+    <meta name="description" content="Record raw and processed voice takes in Sonus.NET, compare them, and manage your recordings.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="index.html">
+            <span class="brand-wave"><span></span><span></span><span></span><span></span><span></span></span>
+            Sonus.NET Guide
+        </a>
+        <nav class="mainnav">
+            <a href="index.html">Home</a>
+            <a href="stages.html">The five stages</a>
+            <a href="microphone.html">Microphone &amp; virtual output</a>
+            <a class="active" href="recording.html">Recording</a>
+            <a href="shortcuts.html">Shortcuts</a>
+            <a href="https://github.com/OpenCreativeSuite/SonarDotNet">GitHub</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="pagehead">
+        <p class="eyebrow">Takes and comparison</p>
+        <h1>Record the raw and the result.</h1>
+        <p>Sonus writes two WAV files for every take: the untouched microphone and the processed voice. Play them back through the same headphones and compare the difference immediately.</p>
+    </div>
+
+    <div class="toc">
+        <strong>On this page</strong>
+        <ol>
+            <li><a href="#record">Recording a take</a></li>
+            <li><a href="#compare">Comparing raw and processed</a></li>
+            <li><a href="#manage">Managing takes</a></li>
+            <li><a href="#files">Where files are stored</a></li>
+        </ol>
+    </div>
+
+    <section id="record">
+        <h2>Recording a take</h2>
+        <p>Recording is part of the same real-time path as monitoring and the virtual microphone. There is no separate export step.</p>
+        <figure>
+            <img src="screenshots/recording.png" alt="The Takes panel with recent raw and processed recordings">
+            <figcaption>The Takes panel lists recent recordings. Each row has a play button and a RAW button for the unprocessed version.</figcaption>
+        </figure>
+        <ol class="steps">
+            <li><strong>Start the engine.</strong> Press <strong>LIVE</strong> and make sure the input meter moves.</li>
+            <li><strong>Press Record a take.</strong> The timer starts and both files begin filling.</li>
+            <li><strong>Speak.</strong> The virtual microphone and headphone monitor continue to work while recording.</li>
+            <li><strong>Press Finish take.</strong> Sonus closes both WAV files and adds the take to the list.</li>
+        </ol>
+        <div class="tip">
+            <strong>Record a clean reference first.</strong>
+            A raw take is useful for comparison and for recovering a performance if the processing is too strong. You can always process it again.
+        </div>
+    </section>
+
+    <section id="compare">
+        <h2>Comparing raw and processed</h2>
+        <p>Playback goes through the selected headphones, not the Windows default device. That keeps the comparison consistent with what you were monitoring.</p>
+        <h3>Take row buttons</h3>
+        <ul>
+            <li><strong>Play icon</strong> — plays the processed version of that take.</li>
+            <li><strong>RAW</strong> — plays the untouched microphone version.</li>
+            <li><strong>Trash</strong> — discards the take and deletes both WAV files.</li>
+        </ul>
+        <h3>Transport</h3>
+        <p>Select a take to reveal the transport underneath the list. The outer play button pauses or resumes. The slider seeks. The <strong>PROCESSED / RAW</strong> button switches versions without leaving the transport.</p>
+        <div class="note">
+            <strong>If the processed version is silent,</strong>
+            play the RAW version. If RAW is also silent, the microphone did not capture any audio. If only PROCESSED is silent, check the Clean threshold and whether a stage is bypassed or attenuated.
+        </div>
+    </section>
+
+    <section id="manage">
+        <h2>Managing takes</h2>
+        <p>The Takes list keeps the most recent recordings, newest first. Each row shows the take number and duration.</p>
+        <ul>
+            <li><strong>Discard</strong> — deletes the raw and processed WAV files and removes the row.</li>
+            <li><strong>Replay</strong> — selecting another take loads it for comparison.</li>
+            <li><strong>Files</strong> — recordings remain ordinary WAV files even if you remove them from the list.</li>
+        </ul>
+        <p>If a file is open in another application and cannot be deleted, Sonus removes the row and reports that the WAV may remain on disk.</p>
+    </section>
+
+    <section id="files">
+        <h2>Where files are stored</h2>
+        <p>Each take is written to:</p>
+        <pre><code>Documents\Sonus Recordings\Sonus_YYYY-MM-DD_HH-mm-ss_raw.wav
+Documents\Sonus Recordings\Sonus_YYYY-MM-DD_HH-mm-ss_processed.wav</code></pre>
+        <p>The files are 48 kHz, 16-bit mono WAV, suitable for editing in any audio application. Presets and preferences live under <code>%LOCALAPPDATA%\Sonus</code>.</p>
+        <div class="tip">
+            <strong>Raw and processed stay in sync.</strong>
+            Both files begin at the same moment and use the same sample rate, so they can be aligned in another editor without guesswork.
+        </div>
+    </section>
+
+    <div class="pager">
+        <a href="microphone.html">← Microphone &amp; virtual output</a>
+        <a href="shortcuts.html">Shortcuts →</a>
+    </div>
+</main>
+
+<footer>
+    Sonus.NET is part of the <a href="https://github.com/OpenCreativeSuite">Open Creative Suite</a>. Free for personal and commercial use.
+</footer>
+</body>
+</html>

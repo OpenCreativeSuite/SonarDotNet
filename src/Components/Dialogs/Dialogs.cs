@@ -97,7 +97,7 @@ internal sealed class SavePresetDialog : Component
                     }
                 },
             }),
-            Ui.Hint("The current tone, noise, dynamics and character values are stored together.")),
+            Ui.Hint("The current tone, clean, dynamics, voice and space values are stored together.")),
         Div(new() { ClassName = "modal-actions" },
             Button(new() { ClassName = "btn is-quiet", OnClick = session.CloseLayers }, Text("Cancel")),
             Button(new() { ClassName = "btn is-primary", OnClick = () => session.SavePreset(session.PresetDraftName) },
@@ -187,11 +187,11 @@ internal sealed class HelpDialog : Component
     {
         StudioSession session = UseContext(SessionContext.Value);
         return Ui.Modal("help-modal", session.CloseLayers,
-            Ui.ModalTitle(Icons.Wave, "How Sonus works", "Four stages between your microphone and the rest of Windows.", session.CloseLayers),
+            Ui.ModalTitle(Icons.Wave, "How Sonus works", "Five stages between your microphone and the rest of Windows.", session.CloseLayers),
             Div(new() { ClassName = "modal-body help-body" },
                 Div(new() { ClassName = "help-flow" },
                     HelpStep("01", "Listen", "Choose a microphone and headphones. Turn on monitoring to hear the processed voice with no echo."),
-                    HelpStep("02", "Shape", "Use the four stages. Drag the tone points; the graph is the control, not a picture of one."),
+                    HelpStep("02", "Shape", "Use the five stages. Drag the tone points; the graph is the control, not a picture of one."),
                     HelpStep("03", "Route", "Install VB-CABLE, enable Virtual microphone, then choose CABLE Output in Discord or OBS."),
                     HelpStep("04", "Compare", "Record a take. Sonus writes both the raw microphone and the processed result.")) ,
                 Div(new() { ClassName = "help-note" },
@@ -200,7 +200,7 @@ internal sealed class HelpDialog : Component
                 Div(new() { ClassName = "shortcut-grid" },
                     Shortcut("Space", "Start or stop live audio"),
                     Shortcut("R", "Record a take"),
-                    Shortcut("1 – 4", "Choose a processing stage"),
+                    Shortcut("1 – 5", "Choose a processing stage"),
                     Shortcut("Esc", "Close a sheet"))),
             Div(new() { ClassName = "modal-actions" },
                 Button(new() { ClassName = "btn is-primary", OnClick = session.CloseLayers }, Text("Start shaping"))));

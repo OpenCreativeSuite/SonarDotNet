@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Microphone &amp; virtual output · Sonus.NET Guide</title>
+    <meta name="description" content="Set up a microphone, headphones, monitoring and the Sonus.NET virtual microphone through VB-CABLE.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="index.html">
+            <span class="brand-wave"><span></span><span></span><span></span><span></span><span></span></span>
+            Sonus.NET Guide
+        </a>
+        <nav class="mainnav">
+            <a href="index.html">Home</a>
+            <a href="stages.html">The five stages</a>
+            <a class="active" href="microphone.html">Microphone &amp; virtual output</a>
+            <a href="recording.html">Recording</a>
+            <a href="shortcuts.html">Shortcuts</a>
+            <a href="https://github.com/OpenCreativeSuite/SonarDotNet">GitHub</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="pagehead">
+        <p class="eyebrow">Input and output</p>
+        <h1>Choose what Sonus hears, and where it goes.</h1>
+        <p>Sonus has three audio destinations: your headphones, a virtual microphone for other apps, and the recorder. They all receive the same processed voice.</p>
+    </div>
+
+    <div class="toc">
+        <strong>On this page</strong>
+        <ol>
+            <li><a href="#devices">Choosing devices</a></li>
+            <li><a href="#monitor">Monitoring in headphones</a></li>
+            <li><a href="#virtual">The virtual microphone</a></li>
+            <li><a href="#trouble">If a device disappears</a></li>
+        </ol>
+    </div>
+
+    <section id="devices">
+        <h2>Choosing devices</h2>
+        <p>Use the two pickers in the top bar for the everyday choice. Open <strong>Settings</strong> when you need the full device list or want to select the virtual output explicitly.</p>
+        <figure>
+            <img src="screenshots/settings.png" alt="Audio settings showing microphone, headphones, virtual routing and input trim">
+            <figcaption>Microphone, headphones and virtual routing are independent. Input trim is a clean gain control before the processing chain.</figcaption>
+        </figure>
+        <ul>
+            <li><strong>Microphone</strong> — the physical microphone Sonus captures.</li>
+            <li><strong>Headphones</strong> — the device used for monitoring and take playback. Choosing headphones avoids acoustic feedback.</li>
+            <li><strong>Virtual microphone</strong> — the playback side of the virtual cable. Sonus sends processed audio here.</li>
+            <li><strong>Input trim</strong> — clean gain before the noise stage. Use it if the input meter stays very low or clips constantly.</li>
+        </ul>
+    </section>
+
+    <section id="monitor">
+        <h2>Monitoring in headphones</h2>
+        <p>Monitoring lets you hear the processed voice while you speak. It is independent of the virtual microphone, so you can mute yourself without taking Sonus offline for everyone else.</p>
+        <ol class="steps">
+            <li><strong>Select your headphones.</strong> Use the Headphones picker in the top bar or in Settings.</li>
+            <li><strong>Turn on monitoring.</strong> Use the switch next to the Headphones picker, or the switch in the Monitor card.</li>
+            <li><strong>Press TEST.</strong> A short chime plays through the selected headphones. If you can hear it, the route is working.</li>
+            <li><strong>Set the level.</strong> Use the headphone slider. This level does not affect the virtual microphone or the recording.</li>
+        </ol>
+        <div class="warning">
+            <strong>Use headphones, not speakers.</strong>
+            Monitoring through speakers can create an acoustic feedback loop. Sonus excludes virtual cables from the headphone list, but it cannot stop a physical speaker from being picked up by the microphone.
+        </div>
+    </section>
+
+    <section id="virtual">
+        <h2>The virtual microphone</h2>
+        <p>Windows does not let an ordinary application create a recording endpoint. Sonus therefore uses the free, signed <strong>VB-CABLE</strong> driver, detects it automatically, and sends the processed voice to its input. Other applications choose the matching output.</p>
+        <figure>
+            <img src="screenshots/settings.png" alt="Settings showing a ready virtual microphone routed to VB-CABLE">
+            <figcaption>When VB-CABLE is installed, Sonus selects it automatically and marks the virtual microphone ready.</figcaption>
+        </figure>
+        <h3>One-time setup</h3>
+        <ol class="steps">
+            <li><strong>Open Settings.</strong> Use the gear icon in the top bar.</li>
+            <li><strong>Download &amp; install.</strong> In the Virtual microphone section, press <strong>Download &amp; install</strong>. Sonus downloads the official VB-CABLE package and opens the official installer.</li>
+            <li><strong>Restart Windows.</strong> The installer asks for a reboot to finish installing the audio device.</li>
+            <li><strong>Reopen Sonus.</strong> The virtual microphone should show <strong>READY</strong> and the virtual switch should be on.</li>
+            <li><strong>Choose it in your other app.</strong> In Discord, OBS, Teams or a game, select <strong>CABLE Output (VB-Audio Virtual Cable)</strong> as the microphone.</li>
+        </ol>
+        <div class="tip">
+            <strong>CABLE Input vs CABLE Output.</strong>
+            Sonus sends to <em>CABLE Input</em>. Other applications record from <em>CABLE Output</em>. The Sonus top bar shows the name other apps should look for: <strong>CABLE Output</strong>.
+        </div>
+        <h3>What travels through it</h3>
+        <p>The virtual microphone receives the same processed signal as the headphone monitor. There are not two processing chains. Turning monitoring down or muting it does not change what other applications hear.</p>
+    </section>
+
+    <section id="trouble">
+        <h2>If a device disappears</h2>
+        <p>If Windows removes the microphone, Sonus stops capture cleanly and reports the problem instead of freezing. Reconnect the device, then press <strong>Refresh devices</strong> in Settings.</p>
+        <ul>
+            <li><strong>No microphone in the list</strong> — check Windows privacy permissions and that the device is enabled in Sound settings.</li>
+            <li><strong>Monitoring is silent</strong> — choose headphones, enable monitoring and press TEST. Check the Windows volume for that endpoint.</li>
+            <li><strong>Other apps cannot see Sonus</strong> — make sure VB-CABLE is installed, the virtual switch is on, and the other app is using <strong>CABLE Output</strong>.</li>
+            <li><strong>Virtual output is missing</strong> — restart Windows after installing VB-CABLE, then open Settings and press Refresh devices.</li>
+        </ul>
+    </section>
+
+    <div class="pager">
+        <a href="stages.html">← The five stages</a>
+        <a href="recording.html">Recording →</a>
+    </div>
+</main>
+
+<footer>
+    Sonus.NET is part of the <a href="https://github.com/OpenCreativeSuite">Open Creative Suite</a>. Free for personal and commercial use.
+</footer>
+</body>
+</html>

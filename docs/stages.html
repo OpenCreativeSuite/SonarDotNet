@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>The five stages · Sonus.NET Guide</title>
+    <meta name="description" content="A practical guide to the Clean, Tone, Dynamics, Voice and Space stages in Sonus.NET.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="index.html">
+            <span class="brand-wave"><span></span><span></span><span></span><span></span><span></span></span>
+            Sonus.NET Guide
+        </a>
+        <nav class="mainnav">
+            <a href="index.html">Home</a>
+            <a class="active" href="stages.html">The five stages</a>
+            <a href="microphone.html">Microphone &amp; virtual output</a>
+            <a href="recording.html">Recording</a>
+            <a href="shortcuts.html">Shortcuts</a>
+            <a href="https://github.com/OpenCreativeSuite/SonarDotNet">GitHub</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <div class="pagehead">
+        <p class="eyebrow">The signal path</p>
+        <h1>Five stages. One voice.</h1>
+        <p>Click any stage in the left rail to open it. The switch in the editor bypasses that stage without losing its settings, so you can hear exactly what it is doing.</p>
+    </div>
+
+    <div class="toc">
+        <strong>On this page</strong>
+        <ol>
+            <li><a href="#clean">Clean</a></li>
+            <li><a href="#tone">Tone</a></li>
+            <li><a href="#dynamics">Dynamics</a></li>
+            <li><a href="#voice">Voice</a></li>
+            <li><a href="#space">Space</a></li>
+            <li><a href="#character">Building a character voice</a></li>
+        </ol>
+    </div>
+
+    <section id="clean">
+        <h2>Clean</h2>
+        <p>Clean decides what counts as sound and what counts as room. It is the first stage because everything after it sounds better when the microphone floor is quiet.</p>
+        <figure>
+            <img src="screenshots/clean.png" alt="The Clean stage showing a gate transfer graph, threshold and reduction controls">
+            <figcaption>The transfer curve shows exactly what happens below the threshold. The live marker sits on the curve while you speak.</figcaption>
+        </figure>
+        <h3>Controls</h3>
+        <ul>
+            <li><strong>Threshold</strong> — the level below which the gate starts closing. Set it just above the room noise, not above quiet speech.</li>
+            <li><strong>Reduction</strong> — how far the room drops between phrases.</li>
+            <li><strong>Gentle expansion</strong> — eases quiet tails instead of cutting them abruptly.</li>
+        </ul>
+        <div class="tip">
+            <strong>Start with the room, not the voice.</strong>
+            Stay quiet for a moment and watch the input meter. Put the threshold just above that resting level. If the gate clips the beginnings of words, lower it.
+        </div>
+    </section>
+
+    <section id="tone">
+        <h2>Tone</h2>
+        <p>Tone is the main frequency-shaping view. The graph is not a picture of an EQ; it is the EQ. Each point can be dragged horizontally for frequency and vertically for gain.</p>
+        <figure>
+            <img src="screenshots/tone.png" alt="The Tone stage with the low, body, presence and air points on a frequency graph">
+            <figcaption>Low, Body, Presence and Air are draggable points. The red edges mark the low and high cut.</figcaption>
+        </figure>
+        <h3>How to use it</h3>
+        <ol class="steps">
+            <li><strong>Start with the cuts.</strong> Raise <strong>Low cut</strong> until rumble and handling noise disappear. Lower <strong>High cut</strong> if the top is hissy or harsh.</li>
+            <li><strong>Find the body.</strong> Drag the Body point up or down around 400–700 Hz. Too much sounds muddy; too little sounds thin.</li>
+            <li><strong>Add presence.</strong> A small lift around 2–4 kHz helps the voice cut through a mix or a stream.</li>
+            <li><strong>Use air sparingly.</strong> The Air point is a shelf above the voice. A little opens the sound; too much emphasises hiss.</li>
+        </ol>
+        <p>For a natural result, keep the curve close to the centre line. Small moves are usually more convincing than large ones.</p>
+    </section>
+
+    <section id="dynamics">
+        <h2>Dynamics</h2>
+        <p>Dynamics holds the loud parts and lifts the quiet parts. The graph shows the static compression curve: input level across the bottom, output level up the side.</p>
+        <figure>
+            <img src="screenshots/dynamics.png" alt="The Dynamics stage showing a compressor curve with threshold, ratio and gain reduction">
+            <figcaption>The knee and top handles on the curve set where compression starts and how firmly it holds peaks.</figcaption>
+        </figure>
+        <h3>Controls</h3>
+        <ul>
+            <li><strong>Threshold</strong> — where steady control begins. Lower thresholds compress more of the voice.</li>
+            <li><strong>Ratio</strong> — how strongly peaks above the threshold are held. 3:1 is a useful speech starting point.</li>
+            <li><strong>Lift</strong> — make-up gain added after compression.</li>
+            <li><strong>Output limiter</strong> — keeps the final output below full scale. Leave it on for a safety net.</li>
+        </ul>
+        <div class="tip">
+            <strong>Watch the gain-reduction meter, not just the sliders.</strong>
+            A few decibels of movement is normal. If the meter is pinned, lower the threshold or add input trim in Settings.
+        </div>
+    </section>
+
+    <section id="voice">
+        <h2>Voice</h2>
+        <p>Voice is where Sonus stops being a microphone cleaner and becomes a voice-design instrument. Pitch, formants, resonance, brightness and texture are separate controls because they do different things.</p>
+        <figure>
+            <img src="screenshots/voice.png" alt="The Voice stage with pitch, vocal size, resonance, brightness and texture controls">
+            <figcaption>Five macro controls coordinate the underlying DSP. The visual curve shows the harmonic shape added by Texture.</figcaption>
+        </figure>
+        <h3>Pitch vs vocal size</h3>
+        <table>
+            <thead><tr><th>Control</th><th>What changes</th><th>What it is useful for</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Pitch</strong></td><td>The fundamental note, −12 to +12 semitones.</td><td>Deeper narrators, higher characters, subtle gender presentation.</td></tr>
+                <tr><td><strong>Vocal size</strong></td><td>The spectral envelope and formant resonances, independent of pitch.</td><td>Smaller/younger voices, larger creatures, a different vocal tract.</td></tr>
+                <tr><td><strong>Resonance</strong></td><td>Body and forwardness around the vocal centre.</td><td>More chest, more presence, a darker or more projected voice.</td></tr>
+                <tr><td><strong>Brightness</strong></td><td>High-frequency character.</td><td>Airy and open, or dark and close.</td></tr>
+                <tr><td><strong>Texture</strong></td><td>Harmonic weight and grit.</td><td>Warmth, roughness, aggression, a more animated character.</td></tr>
+            </tbody>
+        </table>
+        <div class="warning">
+            <strong>Pitch alone does not make a different person.</strong>
+            A pitch-shifted voice still has the same formants. Move <strong>Vocal size</strong> and <strong>Resonance</strong> as well, then adjust Brightness and Texture to finish the character.
+        </div>
+    </section>
+
+    <section id="space">
+        <h2>Space</h2>
+        <p>Space places the voice in an environment. It is deliberately separate from the Voice stage so you can change the room without losing the character.</p>
+        <figure>
+            <img src="screenshots/space.png" alt="The Space stage showing a room decay curve, echo tap and room controls">
+            <figcaption>The decay curve shows the room length; the echo marker shows the repeat and its level.</figcaption>
+        </figure>
+        <h3>Controls</h3>
+        <ul>
+            <li><strong>Room</strong> — the amount of short room around the voice.</li>
+            <li><strong>Room mix</strong> — the balance between the dry voice and the room.</li>
+            <li><strong>Echo</strong> — a single repeat behind the voice. Small amounts add depth; larger amounts become a character effect.</li>
+            <li><strong>Echo time</strong> — the distance between the voice and the repeat.</li>
+        </ul>
+        <p>For a natural room, keep the room subtle and the echo low. For a creature, cave or announcement voice, push both further.</p>
+    </section>
+
+    <section id="character">
+        <h2>Building a character voice</h2>
+        <p>Start from a character preset in the sound library, then refine it against your own voice.</p>
+        <ol class="steps">
+            <li><strong>Pick a starting point.</strong> Try <em>Deep Narrator</em>, <em>Young Spark</em>, <em>Villain</em> or <em>Creature</em>.</li>
+            <li><strong>Set the size.</strong> Move Vocal size first. It changes the perceived body more convincingly than pitch alone.</li>
+            <li><strong>Set the pitch.</strong> Move Pitch a little at a time. Extreme pitch shifts quickly sound artificial.</li>
+            <li><strong>Shape the detail.</strong> Use Resonance for chest/forwardness, Brightness for dark/open, Texture for smooth/gritty.</li>
+            <li><strong>Place it.</strong> Add Room and Echo in Space.</li>
+            <li><strong>Save it.</strong> Use the save button in the top bar to store the sound as a local preset.</li>
+        </ol>
+        <figure>
+            <img src="screenshots/presets.png" alt="The preset library with built-in enhancement and character presets">
+            <figcaption>Presets are starting points, not locked recipes. Every value remains editable.</figcaption>
+        </figure>
+    </section>
+
+    <div class="pager">
+        <a href="index.html">← Home</a>
+        <a href="microphone.html">Microphone &amp; virtual output →</a>
+    </div>
+</main>
+
+<footer>
+    Sonus.NET is part of the <a href="https://github.com/OpenCreativeSuite">Open Creative Suite</a>. Free for personal and commercial use.
+</footer>
+</body>
+</html>

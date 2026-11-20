@@ -25,6 +25,24 @@ public sealed class App : Component
     {
         Ref<StudioSession> reference = UseRef<StudioSession>();
         StudioSession session = reference.Value ??= new StudioSession();
+        Ref<bool> screenshotLayerApplied = UseRef<bool>();
+        if (!screenshotLayerApplied.Value)
+        {
+            screenshotLayerApplied.Value = true;
+            switch (Environment.GetEnvironmentVariable("SONUS_SCREENSHOT_LAYER"))
+            {
+                case "settings":
+                    session.ToggleSettings();
+                    break;
+                case "presets":
+                    session.TogglePresets();
+                    break;
+                case "help":
+                    session.ToggleHelp();
+                    break;
+            }
+        }
+
         var (_, _, tick) = StateWithUpdate(0);
         session.Refresh = () => tick(value => value + 1);
 
@@ -90,7 +108,7 @@ public sealed class App : Component
 
                 break;
             case "1":
-                session.SelectStage(StudioStage.Noise);
+                session.SelectStage(StudioStage.Clean);
                 break;
             case "2":
                 session.SelectStage(StudioStage.Tone);
@@ -99,7 +117,10 @@ public sealed class App : Component
                 session.SelectStage(StudioStage.Dynamics);
                 break;
             case "4":
-                session.SelectStage(StudioStage.Character);
+                session.SelectStage(StudioStage.Voice);
+                break;
+            case "5":
+                session.SelectStage(StudioStage.Space);
                 break;
             case "Ctrl+S":
                 session.OpenSavePreset();

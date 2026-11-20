@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sonus.NET Guide</title>
+    <meta name="description" content="Learn Sonus.NET: a local-first voice studio for shaping your microphone, building character voices, monitoring in headphones and routing a virtual microphone into Discord, OBS and games.">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+    <div class="topbar-inner">
+        <a class="brand" href="index.html">
+            <span class="brand-wave"><span></span><span></span><span></span><span></span><span></span></span>
+            Sonus.NET Guide
+        </a>
+        <nav class="mainnav">
+            <a class="active" href="index.html">Home</a>
+            <a href="stages.html">The five stages</a>
+            <a href="microphone.html">Microphone &amp; virtual output</a>
+            <a href="recording.html">Recording</a>
+            <a href="shortcuts.html">Shortcuts</a>
+            <a href="https://github.com/OpenCreativeSuite/SonarDotNet">GitHub</a>
+        </nav>
+    </div>
+</header>
+
+<main>
+    <section class="hero">
+        <div>
+            <p class="eyebrow">Free voice studio · Windows</p>
+            <h1>Shape the voice. Keep the words.</h1>
+            <p class="lead">Sonus listens to your microphone, shapes it through five visual stages, lets you hear the result in headphones, and sends it to any app as a virtual microphone. No account, no cloud, no audio-engineering degree.</p>
+            <div class="cta-row">
+                <a class="btn btn-primary" href="https://github.com/OpenCreativeSuite/SonarDotNet/releases/latest">Download for free</a>
+                <a class="btn btn-quiet" href="stages.html">Start shaping</a>
+            </div>
+            <p class="hero-note">Everything runs on your computer. VB-CABLE is only needed for the virtual microphone output.</p>
+        </div>
+        <figure>
+            <img src="screenshots/main.png" alt="The Sonus.NET main window with the Voice stage open and live audio metering" width="1440" height="920" fetchpriority="high" decoding="async">
+            <figcaption>The signal path on the left, a visual editor in the middle, and the live monitor and takes on the right.</figcaption>
+        </figure>
+    </section>
+
+    <h2 id="jobs">What do you want to do?</h2>
+    <p>These are the everyday jobs Sonus is built for. Pick one and follow the short guide.</p>
+    <div class="grid3 task-grid">
+        <a class="card task" href="stages.html#clean">
+            <span class="task-icon">01</span>
+            <h3>Make my microphone sound clean</h3>
+            <p>Set a noise floor, remove room rumble and even out loud and quiet phrases.</p>
+            <span class="task-link">Open the five stages →</span>
+        </a>
+        <a class="card task" href="stages.html#voice">
+            <span class="task-icon">04</span>
+            <h3>Build a character voice</h3>
+            <p>Move pitch and formants independently, then add resonance, brightness and texture.</p>
+            <span class="task-link">Shape a voice →</span>
+        </a>
+        <a class="card task" href="microphone.html#virtual">
+            <span class="task-icon">◎</span>
+            <h3>Use Sonus in Discord or OBS</h3>
+            <p>Install the free VB-CABLE device and choose Sonus as the microphone in another app.</p>
+            <span class="task-link">Set up the virtual microphone →</span>
+        </a>
+        <a class="card task" href="microphone.html#monitor">
+            <span class="task-icon">♪</span>
+            <h3>Hear myself while I speak</h3>
+            <p>Choose headphones, turn on monitoring and confirm the route with a test chime.</p>
+            <span class="task-link">Set up monitoring →</span>
+        </a>
+        <a class="card task" href="recording.html">
+            <span class="task-icon">●</span>
+            <h3>Record and compare</h3>
+            <p>Capture raw and processed audio together, then switch between them instantly.</p>
+            <span class="task-link">Record a take →</span>
+        </a>
+        <a class="card task" href="stages.html#space">
+            <span class="task-icon">⌂</span>
+            <h3>Put a character in a room</h3>
+            <p>Use a short room and a controlled echo to place the voice somewhere else.</p>
+            <span class="task-link">Open Space →</span>
+        </a>
+    </div>
+
+    <section id="gallery">
+        <h2>A look around</h2>
+        <div class="grid3">
+            <figure>
+                <img src="screenshots/tone.png" alt="The Tone stage with a movable frequency-response curve">
+                <figcaption>The Tone curve is the control. Drag the points and the sound changes immediately.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/voice.png" alt="The Voice stage with pitch, vocal size, resonance, brightness and texture controls">
+                <figcaption>Pitch changes the note; vocal size changes the formants and the perceived body of the voice.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/space.png" alt="The Space stage showing a room decay curve and echo controls">
+                <figcaption>Room and echo have their own visual readout, separate from the voice character.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/settings.png" alt="The audio settings with microphone, headphones and virtual microphone choices">
+                <figcaption>Choose the physical microphone, the headphones you listen on, and the virtual output.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/presets.png" alt="The preset library with enhancement and character presets">
+                <figcaption>Start from a professional sound or a character preset, then make it yours.</figcaption>
+            </figure>
+            <figure>
+                <img src="screenshots/recording.png" alt="The Takes panel with raw and processed versions of recent recordings">
+                <figcaption>Every take is written twice: the untouched microphone and the processed result.</figcaption>
+            </figure>
+        </div>
+    </section>
+
+    <section id="stages">
+        <h2>Five stages, one signal path</h2>
+        <p>Each stage has one job. You can bypass any stage and hear exactly what it contributes.</p>
+        <table>
+            <thead><tr><th>Stage</th><th>Main purpose</th><th>What is inside</th></tr></thead>
+            <tbody>
+                <tr><td><strong>Clean</strong></td><td>Remove unwanted sound</td><td>Noise gate, gentle expansion, room floor.</td></tr>
+                <tr><td><strong>Tone</strong></td><td>Shape frequency and colour</td><td>Interactive four-point EQ, low cut, high cut.</td></tr>
+                <tr><td><strong>Dynamics</strong></td><td>Keep the voice consistent</td><td>Compressor, make-up lift, output limiter.</td></tr>
+                <tr><td><strong>Voice</strong></td><td>Change vocal identity</td><td>Pitch, formant/vocal size, resonance, brightness, texture.</td></tr>
+                <tr><td><strong>Space</strong></td><td>Create an environment</td><td>Short room, room mix, echo and echo time.</td></tr>
+            </tbody>
+        </table>
+    </section>
+
+    <section id="start">
+        <h2>Get started in a minute</h2>
+        <ol class="steps">
+            <li><strong>Run Sonus.</strong> Download a release or run <code>dotnet run</code> from a checkout with the .NET 10 SDK.</li>
+            <li><strong>Choose devices.</strong> Pick your microphone and headphones in the top bar. Use headphones for monitoring to avoid acoustic feedback.</li>
+            <li><strong>Start the engine.</strong> Press <strong>LIVE</strong> and speak. The input and output meters should move.</li>
+            <li><strong>Hear yourself.</strong> Turn on monitoring and press <strong>TEST</strong>. If the chime is audible, the route is working.</li>
+            <li><strong>Shape the sound.</strong> Move through Clean, Tone, Dynamics, Voice and Space. Click a stage on the left; the large editor follows.</li>
+            <li><strong>Route it onward.</strong> Install VB-CABLE once, enable the virtual microphone, then choose <strong>CABLE Output</strong> in Discord, OBS, Teams or a game.</li>
+            <li><strong>Record a comparison.</strong> Record a take, then switch between its RAW and PROCESSED versions.</li>
+        </ol>
+        <div class="tip">
+            <strong>Pitch and vocal size are different.</strong>
+            Pitch moves the note. Vocal size moves the formants, which is what makes a voice feel smaller, larger, younger or stranger. Try both together for character voices.
+        </div>
+    </section>
+
+    <section class="promise">
+        <h2>Free, local, and yours</h2>
+        <p>Sonus has no account, subscription, advertising or telemetry. Audio is captured, shaped and written on your computer. Presets and preferences are local JSON files, and recordings are ordinary WAV files you can open anywhere.</p>
+        <div class="grid3">
+            <div class="card">
+                <h3>No cloud processing</h3>
+                <p>The DSP engine runs locally in real time. The only network action is the optional VB-CABLE download when you ask for it.</p>
+            </div>
+            <div class="card">
+                <h3>Real files</h3>
+                <p>Takes are standard 48 kHz WAV files. Presets are readable JSON. Nothing is locked inside a proprietary project.</p>
+            </div>
+            <div class="card">
+                <h3>Every feature included</h3>
+                <p>All five stages, character presets, monitoring, virtual output and recording are available with no paid tier.</p>
+            </div>
+        </div>
+    </section>
+
+    <h2>Run from source</h2>
+    <p>You need the <a href="https://dotnet.microsoft.com/download">.NET 10 SDK</a> on Windows.</p>
+    <pre><code>dotnet run</code></pre>
+    <p>Run the tests with <code>dotnet test tests/SonarDotNet.Tests/SonarDotNet.Tests.csproj</code>. The desktop host also accepts <code>--screenshot frame.bmp</code> for a headless frame capture.</p>
+
+    <div class="pager">
+        <a href="stages.html">The five stages →</a>
+        <a href="microphone.html">Microphone &amp; virtual output →</a>
+    </div>
+</main>
+
+<footer>
+    Sonus.NET is part of the <a href="https://github.com/OpenCreativeSuite">Open Creative Suite</a>. Free for personal and commercial use.
+</footer>
+</body>
+</html>

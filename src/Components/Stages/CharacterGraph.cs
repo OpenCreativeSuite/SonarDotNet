@@ -55,7 +55,6 @@ internal sealed class CharacterGraph : Component
         Graph.Frame(context, plot, 4, 4);
         CharacterSettings character = session.Settings.Character;
         float warmth = Math.Clamp(character.Warmth / 100f, 0f, 1f);
-        float space = Math.Clamp(character.Space / 100f, 0f, 1f);
 
         float zeroX = plot.X + (plot.Width * 0.5f);
         float zeroY = plot.Y + (plot.Height * 0.5f);
@@ -78,28 +77,18 @@ internal sealed class CharacterGraph : Component
             return Graph.Y(plot, (1f - shaped) * 0.5f);
         }, character.Enabled ? Graph.Warm : Graph.Faint, 2f);
 
-        // Space is represented as a decaying ring rather than a second graph.
-        float radius = 26f + (space * 88f);
-        for (int i = 3; i >= 1; i--)
-        {
-            float r = radius * (i / 3f);
-            context.FillEllipse(
-                new Rect(zeroX + (plot.Width * 0.16f) - r, zeroY - r, r * 2f, r * 2f),
-                (uint)(0x07 + (i * 0x03)) << 24 | (Graph.Output & 0x00FFFFFF));
-        }
-
         float handleX = Graph.X(plot, warmth);
         float handleY = Graph.Y(plot, (1f - (MathF.Tanh(warmth * drive) / MathF.Tanh(drive))) * 0.5f);
         Graph.Node(context, handleX, handleY, character.Enabled ? Graph.Warm : Graph.Faint, 5.5f, _drag);
 
         context.DrawText(new Rect(plot.X + 8f, plot.Y + 8f, 250f, 12f), "Drag to add harmonic weight", Graph.Small);
         context.DrawText(
-            new Rect(plot.Right - 188f, plot.Y + 8f, 180f, 12f),
-            $"WARMTH {character.Warmth:0}%   SPACE {character.Space:0}%",
+            new Rect(plot.Right - 238f, plot.Y + 8f, 230f, 12f),
+            $"PITCH {Ui.Semitones(character.PitchSemitones)}  FORMANT {Ui.Semitones(character.FormantSemitones)}",
             Graph.Value);
         context.DrawText(
-            new Rect(plot.X + 8f, plot.Y + 26f, 240f, 12f),
-            MathF.Abs(character.PitchSemitones) < 0.01f ? "No pitch change" : $"Pitch {Ui.Semitones(character.PitchSemitones)}",
+            new Rect(plot.X + 8f, plot.Y + 26f, 300f, 12f),
+            $"Resonance {character.Resonance * 50f + 50f:0}%  ·  Brightness {character.Brightness * 50f + 50f:0}%  ·  Texture {character.Warmth:0}%",
             Graph.Small);
 
         if (!character.Enabled)

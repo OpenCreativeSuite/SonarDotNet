@@ -39,7 +39,7 @@ internal static class Fx
             PresetName = "Natural",
             LiveOnLaunch = false,
         };
-        return new StudioSession(service, preferences, PresetLibrary.BuiltIn, persistPreferences: false);
+        return new StudioSession(service, preferences, PresetLibrary.BuiltIn, persistPreferences: false, loadRecentTakes: false);
     }
 
     /// <summary>Wraps a component in the application provider.</summary>

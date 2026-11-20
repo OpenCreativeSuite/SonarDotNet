@@ -31,6 +31,6 @@ internal sealed class StatusBar : Component
             Span(new() { ClassName = "status-sep" }),
             Span(new() { ClassName = "status-item is-muted" }, Text("R  record")),
             Span(new() { ClassName = "status-sep" }),
-            Span(new() { ClassName = "status-item is-muted" }, Text("1–4  stage")));
+            Span(new() { ClassName = "status-item is-muted" }, Text("1–5  stage")));
     }
 }

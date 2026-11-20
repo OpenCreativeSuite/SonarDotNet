@@ -111,6 +111,83 @@ public sealed class RealAudioIntegrationTests
         Assert.True(peak > 0.0005f, $"Monitor output peak was {peak:0.0000}; status={status}");
     }
 
+    [Fact]
+    public void TakePlayerPlaysThroughTheRequestedOutput()
+    {
+        if (Environment.GetEnvironmentVariable("SONUS_AUDIO_TEST") != "1")
+        {
+            return;
+        }
+
+        using MMDeviceEnumerator enumerator = new();
+        MMDevice? cable = enumerator.EnumerateAudioEndPoints(DataFlow.Render, DeviceState.Active)
+            .FirstOrDefault(device => device.FriendlyName.Contains("CABLE Input", StringComparison.Ordinal));
+        MMDevice? cableOutput = enumerator.EnumerateAudioEndPoints(DataFlow.Capture, DeviceState.Active)
+            .FirstOrDefault(device => device.FriendlyName.Contains("CABLE Output", StringComparison.Ordinal));
+        if (cable is null || cableOutput is null)
+        {
+            return;
+        }
+
+        string folder = Path.Combine(Path.GetTempPath(), "SonarDotNetTests", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(folder);
+        string path = Path.Combine(folder, "playback.wav");
+        try
+        {
+            using (WaveFileWriter writer = new(path, new WaveFormat(48000, 16, 1)))
+            {
+                float[] tone = Fx.Tone(440f, 24000, 0.2f);
+                byte[] bytes = new byte[tone.Length * 2];
+                for (int i = 0; i < tone.Length; i++)
+                {
+                    short sample = (short)(tone[i] * short.MaxValue);
+                    bytes[i * 2] = (byte)(sample & 0xFF);
+                    bytes[(i * 2) + 1] = (byte)((sample >> 8) & 0xFF);
+                }
+
+                writer.Write(bytes, 0, bytes.Length);
+            }
+
+            float peak = 0f;
+            int loudFrames = 0;
+            using WasapiCapture capture = new(cableOutput, true, 20);
+            capture.DataAvailable += (_, args) =>
+            {
+                WaveFormat format = capture.WaveFormat;
+                int frames = args.BytesRecorded / format.BlockAlign;
+                for (int frame = 0; frame < frames; frame++)
+                {
+                    float value = BitConverter.ToSingle(args.Buffer, frame * format.BlockAlign);
+                    peak = MathF.Max(peak, MathF.Abs(value));
+                    if (MathF.Abs(value) > 0.005f)
+                    {
+                        loudFrames++;
+                    }
+                }
+            };
+            capture.StartRecording();
+            using TakePlayer player = new();
+            player.Play(path, cable.ID, 0.5f);
+            Thread.Sleep(1500);
+            capture.StopRecording();
+            player.Stop();
+
+            Assert.True(peak > 0.0005f, $"Playback peak was {peak:0.0000}");
+            Assert.InRange(loudFrames, 18000, 30000);
+        }
+        finally
+        {
+            try
+            {
+                Directory.Delete(folder, recursive: true);
+            }
+            catch
+            {
+                // Cleanup is not part of the assertion.
+            }
+        }
+    }
+
     private static float CapturePeak(MMDevice captureDevice, MMDevice toneDevice, WindowsAudioService service)
     {
         float peak = 0f;

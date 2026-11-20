@@ -45,34 +45,38 @@ internal sealed class StageEditor : Component
 
     private static Node GraphFor(StudioStage stage) => stage switch
     {
-        StudioStage.Noise => C<NoiseGraph>(),
+        StudioStage.Clean => C<NoiseGraph>(),
         StudioStage.Tone => C<ToneGraph>(),
         StudioStage.Dynamics => C<DynamicsGraph>(),
-        _ => C<CharacterGraph>(),
+        StudioStage.Voice => C<CharacterGraph>(),
+        _ => C<SpaceGraph>(),
     };
 
     private static string GraphTitle(StudioStage stage) => stage switch
     {
-        StudioStage.Noise => "Gate response",
+        StudioStage.Clean => "Gate response",
         StudioStage.Tone => "Frequency response",
         StudioStage.Dynamics => "Compression curve",
-        _ => "Harmonic shape",
+        StudioStage.Voice => "Vocal shape",
+        _ => "Room & echo",
     };
 
     private static string GraphNote(StudioSession session, StudioStage stage) => stage switch
     {
-        StudioStage.Noise => $"{session.Settings.Noise.ReductionDb:0} dB of room reduction",
+        StudioStage.Clean => $"{session.Settings.Noise.ReductionDb:0} dB of room reduction",
         StudioStage.Tone => $"{session.Settings.Tone.Bands.Length} movable points · 20 Hz–20 kHz",
         StudioStage.Dynamics => $"{session.Settings.Dynamics.Ratio:0.0}:1 · {session.Settings.Dynamics.ThresholdDb:0} dB threshold",
-        _ => $"{Ui.Semitones(session.Settings.Character.PitchSemitones)} · {session.Settings.Character.Warmth:0}% warmth",
+        StudioStage.Voice => $"{Ui.Semitones(session.Settings.Character.PitchSemitones)} pitch · {Ui.Semitones(session.Settings.Character.FormantSemitones)} formant",
+        _ => $"{session.Settings.Character.Space:0}% room · {session.Settings.Character.DelayMix * 100f:0}% echo",
     };
 
     private static Node Controls(StudioSession session, StudioStage stage) => stage switch
     {
-        StudioStage.Noise => NoiseControls(session),
+        StudioStage.Clean => NoiseControls(session),
         StudioStage.Tone => ToneControls(session),
         StudioStage.Dynamics => DynamicsControls(session),
-        _ => CharacterControls(session),
+        StudioStage.Voice => VoiceControls(session),
+        _ => SpaceControls(session),
     };
 
     private static Node NoiseControls(StudioSession session)
@@ -118,19 +122,44 @@ internal sealed class StageEditor : Component
                 session.UpdateDynamics(settings => settings with { Limiter = !settings.Limiter })));
     }
 
-    private static Node CharacterControls(StudioSession session)
+    private static Node VoiceControls(StudioSession session)
     {
         CharacterSettings character = session.Settings.Character;
-        return Div(new() { ClassName = "control-deck is-three" },
+        float vocalSize = 50f + (character.FormantSemitones / 12f * 50f);
+        return Div(new() { ClassName = "control-deck is-five" },
             Ui.Slider(session, "Pitch", character.PitchSemitones, -12f, 12f, 1f, Ui.Semitones(character.PitchSemitones), value =>
                 session.UpdateCharacter(settings => settings with { PitchSemitones = MathF.Round(Ui.Parse(value, -12f, 12f, character.PitchSemitones)) }),
-                "Shifts the whole voice, not just the formants."),
-            Ui.Slider(session, "Warmth", character.Warmth, 0f, 100f, 1f, Ui.Percent(character.Warmth), value =>
+                "Moves the fundamental pitch without changing speed."),
+            Ui.Slider(session, "Vocal size", vocalSize, 0f, 100f, 1f, $"{vocalSize:0}%", value =>
+                session.UpdateCharacter(settings => settings with { FormantSemitones = (Ui.Parse(value, 0f, 100f, vocalSize) - 50f) / 50f * 12f }),
+                "Moves the formants: smaller sounds younger, larger sounds deeper."),
+            Ui.Slider(session, "Resonance", character.Resonance * 50f + 50f, 0f, 100f, 1f, $"{character.Resonance * 50f + 50f:0}%", value =>
+                session.UpdateCharacter(settings => settings with { Resonance = (Ui.Parse(value, 0f, 100f, character.Resonance * 50f + 50f) - 50f) / 50f }),
+                "The weight and placement around the vocal body."),
+            Ui.Slider(session, "Brightness", character.Brightness * 50f + 50f, 0f, 100f, 1f, $"{character.Brightness * 50f + 50f:0}%", value =>
+                session.UpdateCharacter(settings => settings with { Brightness = (Ui.Parse(value, 0f, 100f, character.Brightness * 50f + 50f) - 50f) / 50f }),
+                "Darkens or opens the top of the voice."),
+            Ui.Slider(session, "Texture", character.Warmth, 0f, 100f, 1f, Ui.Percent(character.Warmth), value =>
                 session.UpdateCharacter(settings => settings with { Warmth = Ui.Parse(value, 0f, 100f, character.Warmth) }),
-                "Adds harmonic weight without raising the level."),
-            Ui.Slider(session, "Space", character.Space, 0f, 100f, 1f, Ui.Percent(character.Space), value =>
+                "Adds harmonic grip, from smooth to rough."));
+    }
+
+    private static Node SpaceControls(StudioSession session)
+    {
+        CharacterSettings character = session.Settings.Character;
+        return Div(new() { ClassName = "control-deck" },
+            Ui.Slider(session, "Room", character.Space, 0f, 100f, 1f, Ui.Percent(character.Space), value =>
                 session.UpdateCharacter(settings => settings with { Space = Ui.Parse(value, 0f, 100f, character.Space) }),
-                "A small, short room around the voice."));
+                "How much of the short room you hear."),
+            Ui.Slider(session, "Room mix", character.SpaceMix * 100f, 0f, 100f, 1f, Ui.Percent(character.SpaceMix * 100f), value =>
+                session.UpdateCharacter(settings => settings with { SpaceMix = Ui.Parse(value, 0f, 100f, character.SpaceMix * 100f) / 100f }),
+                "The balance between the dry voice and the room."),
+            Ui.Slider(session, "Echo", character.DelayMix * 100f, 0f, 100f, 1f, Ui.Percent(character.DelayMix * 100f), value =>
+                session.UpdateCharacter(settings => settings with { DelayMix = Ui.Parse(value, 0f, 100f, character.DelayMix * 100f) / 100f }),
+                "A single repeat behind the voice."),
+            Ui.Slider(session, "Echo time", character.DelayMs, 80f, 450f, 5f, $"{character.DelayMs:0} ms", value =>
+                session.UpdateCharacter(settings => settings with { DelayMs = Ui.Parse(value, 80f, 450f, character.DelayMs) }),
+                "The distance between the voice and its echo."));
     }
 
     private static Node ToggleBlock(string title, string subtitle, bool on, Action toggle) =>

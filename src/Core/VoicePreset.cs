@@ -195,5 +195,122 @@ public static class PresetLibrary
                 Character = new CharacterSettings { Warmth = 18f, Space = 7f },
             },
             true),
+        new(
+            "Deep Narrator",
+            "A grounded storyteller with size and calm authority.",
+            new VoiceSettings
+            {
+                Tone = new ToneSettings
+                {
+                    LowCutHz = 70f,
+                    HighCutHz = 14500f,
+                    Bands = [
+                        new() { Label = "Low", Kind = ToneBandKind.LowShelf, Frequency = 180f, GainDb = 2.5f, Q = 0.7f },
+                        new() { Label = "Body", Kind = ToneBandKind.Peak, Frequency = 420f, GainDb = 1.5f, Q = 1f },
+                        new() { Label = "Presence", Kind = ToneBandKind.Peak, Frequency = 2400f, GainDb = 0.5f, Q = 1.1f },
+                        new() { Label = "Air", Kind = ToneBandKind.HighShelf, Frequency = 8000f, GainDb = -1.5f, Q = 0.7f },
+                    ],
+                },
+                Dynamics = new DynamicsSettings { ThresholdDb = -28f, Ratio = 3.2f, AttackMs = 16f, ReleaseMs = 200f, MakeupDb = 3f },
+                Character = new CharacterSettings
+                {
+                    PitchSemitones = -4f,
+                    FormantSemitones = -3.5f,
+                    Resonance = 0.16f,
+                    Brightness = -0.18f,
+                    Warmth = 22f,
+                    Space = 14f,
+                },
+            },
+            true),
+        new(
+            "Young Spark",
+            "Lighter, brighter and a little quicker on its feet.",
+            new VoiceSettings
+            {
+                Tone = new ToneSettings
+                {
+                    LowCutHz = 110f,
+                    HighCutHz = 17500f,
+                    Bands = [
+                        new() { Label = "Low", Kind = ToneBandKind.LowShelf, Frequency = 160f, GainDb = -2f, Q = 0.7f },
+                        new() { Label = "Body", Kind = ToneBandKind.Peak, Frequency = 480f, GainDb = -0.5f, Q = 1f },
+                        new() { Label = "Presence", Kind = ToneBandKind.Peak, Frequency = 3600f, GainDb = 3.5f, Q = 1.1f },
+                        new() { Label = "Air", Kind = ToneBandKind.HighShelf, Frequency = 10000f, GainDb = 3f, Q = 0.7f },
+                    ],
+                },
+                Dynamics = new DynamicsSettings { ThresholdDb = -30f, Ratio = 3f, AttackMs = 7f, ReleaseMs = 110f, MakeupDb = 4f },
+                Character = new CharacterSettings
+                {
+                    PitchSemitones = 5f,
+                    FormantSemitones = 5.5f,
+                    Resonance = -0.08f,
+                    Brightness = 0.24f,
+                    Warmth = 8f,
+                    Space = 4f,
+                },
+            },
+            true),
+        new(
+            "Villain",
+            "Dark resonance and a controlled edge, made for confrontation.",
+            new VoiceSettings
+            {
+                Tone = new ToneSettings
+                {
+                    LowCutHz = 65f,
+                    HighCutHz = 13500f,
+                    Bands = [
+                        new() { Label = "Low", Kind = ToneBandKind.LowShelf, Frequency = 150f, GainDb = 2f, Q = 0.7f },
+                        new() { Label = "Body", Kind = ToneBandKind.Peak, Frequency = 650f, GainDb = 2f, Q = 0.9f },
+                        new() { Label = "Presence", Kind = ToneBandKind.Peak, Frequency = 2500f, GainDb = -1f, Q = 1.2f },
+                        new() { Label = "Air", Kind = ToneBandKind.HighShelf, Frequency = 7500f, GainDb = -2.5f, Q = 0.7f },
+                    ],
+                },
+                Dynamics = new DynamicsSettings { ThresholdDb = -30f, Ratio = 4.5f, AttackMs = 8f, ReleaseMs = 140f, MakeupDb = 4f },
+                Character = new CharacterSettings
+                {
+                    PitchSemitones = -3f,
+                    FormantSemitones = -4f,
+                    Resonance = 0.32f,
+                    Brightness = -0.28f,
+                    Warmth = 38f,
+                    Space = 24f,
+                    DelayMs = 280f,
+                    DelayMix = 0.08f,
+                },
+            },
+            true),
+        new(
+            "Creature",
+            "Large, strange and cinematic, with room around every syllable.",
+            new VoiceSettings
+            {
+                Tone = new ToneSettings
+                {
+                    LowCutHz = 55f,
+                    HighCutHz = 12000f,
+                    Bands = [
+                        new() { Label = "Low", Kind = ToneBandKind.LowShelf, Frequency = 140f, GainDb = 3f, Q = 0.7f },
+                        new() { Label = "Body", Kind = ToneBandKind.Peak, Frequency = 700f, GainDb = 2.5f, Q = 0.8f },
+                        new() { Label = "Presence", Kind = ToneBandKind.Peak, Frequency = 3100f, GainDb = -2f, Q = 1.2f },
+                        new() { Label = "Air", Kind = ToneBandKind.HighShelf, Frequency = 8000f, GainDb = -3f, Q = 0.7f },
+                    ],
+                },
+                Dynamics = new DynamicsSettings { ThresholdDb = -34f, Ratio = 5f, AttackMs = 14f, ReleaseMs = 180f, MakeupDb = 5f },
+                Character = new CharacterSettings
+                {
+                    PitchSemitones = -7f,
+                    FormantSemitones = 5f,
+                    Resonance = 0.45f,
+                    Brightness = -0.32f,
+                    Warmth = 58f,
+                    Space = 38f,
+                    SpaceMix = 0.62f,
+                    DelayMs = 330f,
+                    DelayMix = 0.16f,
+                },
+            },
+            true),
     ];
 }

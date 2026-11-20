@@ -69,6 +69,9 @@ public sealed class AudioOutputSink : IDisposable
     /// <summary>Approximate latency through this endpoint.</summary>
     public float LatencyMs => _bufferMilliseconds + _deviceLatencyMilliseconds;
 
+    /// <summary>Audio currently queued for the device.</summary>
+    public TimeSpan BufferedDuration => _buffer.BufferedDuration;
+
     /// <summary>Pushes one processed mono block to the device.</summary>
     public void Push(ReadOnlySpan<float> mono)
     {

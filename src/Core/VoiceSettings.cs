@@ -3,10 +3,11 @@ namespace SonarDotNet.Core;
 /// <summary>The four conceptual processing stages shown in the interface.</summary>
 public enum StudioStage
 {
-    Noise,
+    Clean,
     Tone,
     Dynamics,
-    Character,
+    Voice,
+    Space,
 }
 
 /// <summary>One movable point on the tone curve.</summary>
@@ -121,8 +122,11 @@ public sealed record DynamicsSettings
 /// <summary>Personality: harmonic warmth and a little space.</summary>
 public sealed record CharacterSettings
 {
-    /// <summary>Whether the stage is active.</summary>
+    /// <summary>Whether the voice-shaping stage is active.</summary>
     public bool Enabled { get; init; } = true;
+
+    /// <summary>Whether reverb and echo are active.</summary>
+    public bool SpaceEnabled { get; init; } = true;
 
     /// <summary>Saturation amount, 0 to 100.</summary>
     public float Warmth { get; init; } = 16f;
@@ -132,6 +136,24 @@ public sealed record CharacterSettings
 
     /// <summary>Pitch change in semitones, -12 to +12.</summary>
     public float PitchSemitones { get; init; }
+
+    /// <summary>Formant shift in semitones. Positive is a smaller vocal tract.</summary>
+    public float FormantSemitones { get; init; }
+
+    /// <summary>Resonance focus, -1 (dark) to +1 (forward).</summary>
+    public float Resonance { get; init; }
+
+    /// <summary>High-frequency character, -1 (dark) to +1 (bright).</summary>
+    public float Brightness { get; init; }
+
+    /// <summary>Echo delay in milliseconds.</summary>
+    public float DelayMs { get; init; } = 240f;
+
+    /// <summary>Echo feedback, 0 to 1.</summary>
+    public float DelayFeedback { get; init; } = 0.28f;
+
+    /// <summary>Echo wet level, 0 to 1.</summary>
+    public float DelayMix { get; init; }
 
     /// <summary>Wet/dry balance of the reverb, 0 to 1.</summary>
     public float SpaceMix { get; init; } = 0.55f;

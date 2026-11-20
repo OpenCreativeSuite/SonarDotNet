@@ -2473,3 +2473,22 @@ canvas {
 .stage-card {
     pointer-events: auto;
 }
+
+.control-deck.is-five {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.take-discard {
+    width: 22px;
+    height: 20px;
+    color: var(--text-ghost);
+}
+
+.take-discard .fa {
+    font-size: 8px;
+}
+
+.take-discard:hover {
+    color: var(--danger);
+    background-color: var(--danger-soft);
+}

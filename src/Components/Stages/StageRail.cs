@@ -15,7 +15,7 @@ internal sealed class StageRail : Component
         return Aside(new() { ClassName = "rail" },
             Div(new() { ClassName = "rail-head" },
                 Span(new() { ClassName = "rail-kicker" }, Text("SIGNAL PATH")),
-                Span(new() { ClassName = "rail-title" }, Text("Four stages. One clear voice."))),
+                Span(new() { ClassName = "rail-title" }, Text("Five stages. One clear voice."))),
             Div(new() { ClassName = "stage-list" },
                 Each(Stages.All, info => (Node)Card(session, info))),
             Div(new() { ClassName = "rail-note" },
@@ -56,10 +56,11 @@ internal sealed class StageRail : Component
 
     internal static bool Enabled(StudioSession session, StudioStage stage) => stage switch
     {
-        StudioStage.Noise => session.Settings.Noise.Enabled,
+        StudioStage.Clean => session.Settings.Noise.Enabled,
         StudioStage.Tone => session.Settings.Tone.Enabled,
         StudioStage.Dynamics => session.Settings.Dynamics.Enabled,
-        StudioStage.Character => session.Settings.Character.Enabled,
+        StudioStage.Voice => session.Settings.Character.Enabled,
+        StudioStage.Space => session.Settings.Character.SpaceEnabled,
         _ => true,
     };
 
@@ -67,7 +68,7 @@ internal sealed class StageRail : Component
     {
         switch (stage)
         {
-            case StudioStage.Noise:
+            case StudioStage.Clean:
                 session.UpdateNoise(settings => settings with { Enabled = !settings.Enabled });
                 break;
             case StudioStage.Tone:
@@ -76,8 +77,11 @@ internal sealed class StageRail : Component
             case StudioStage.Dynamics:
                 session.UpdateDynamics(settings => settings with { Enabled = !settings.Enabled });
                 break;
-            case StudioStage.Character:
+            case StudioStage.Voice:
                 session.UpdateCharacter(settings => settings with { Enabled = !settings.Enabled });
+                break;
+            case StudioStage.Space:
+                session.UpdateCharacter(settings => settings with { SpaceEnabled = !settings.SpaceEnabled });
                 break;
         }
     }

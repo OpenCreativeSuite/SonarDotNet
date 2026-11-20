@@ -25,7 +25,8 @@ public sealed class StudioSession : IDisposable
         IAudioService? audio = null,
         SonusSettings? preferences = null,
         IEnumerable<VoicePreset>? presets = null,
-        bool persistPreferences = true)
+        bool persistPreferences = true,
+        bool loadRecentTakes = true)
     {
         _audio = audio ?? new WindowsAudioService();
         _preferences = preferences ?? SonusSettings.Load();
@@ -45,7 +46,10 @@ public sealed class StudioSession : IDisposable
 
         _audio.RefreshDevices();
         ResolveDevices();
-        LoadRecentTakes();
+        if (loadRecentTakes)
+        {
+            LoadRecentTakes();
+        }
 
         _audio.UpdateSettings(Settings);
         _audio.SetMonitorVolume(MonitorVolume);
@@ -521,10 +525,11 @@ public sealed class StudioSession : IDisposable
     {
         Settings = ActiveStage switch
         {
-            StudioStage.Noise => Settings with { Noise = new NoiseSettings() },
+            StudioStage.Clean => Settings with { Noise = new NoiseSettings() },
             StudioStage.Tone => Settings with { Tone = new ToneSettings() },
             StudioStage.Dynamics => Settings with { Dynamics = new DynamicsSettings() },
-            StudioStage.Character => Settings with { Character = new CharacterSettings() },
+            StudioStage.Voice => Settings with { Character = new CharacterSettings { SpaceEnabled = Settings.Character.SpaceEnabled } },
+            StudioStage.Space => Settings with { Character = Settings.Character with { Space = 8f, SpaceMix = 0.55f, DelayMix = 0f, DelayMs = 240f } },
             _ => Settings,
         };
         Apply(Settings);
@@ -589,8 +594,10 @@ public sealed class StudioSession : IDisposable
 
         SelectedTake = take;
         PlayingProcessed = processed;
-        _player.Play(path);
-        Status = processed ? "Playing processed take" : "Playing raw take";
+        _player.Play(path, MonitorDeviceId, MonitorVolume);
+        Status = _player.IsPlaying
+            ? (processed ? "Playing processed take" : "Playing raw take")
+            : "Could not start playback on the selected headphones";
         Changed();
     }
 
@@ -598,6 +605,40 @@ public sealed class StudioSession : IDisposable
     public void StopPlayback()
     {
         _player.Stop();
+        Changed();
+    }
+
+    /// <summary>Discards a take and deletes its raw/processed WAV files.</summary>
+    public void DiscardTake(RecordingResult take)
+    {
+        bool wasSelected = SelectedTake is not null && ReferenceEquals(SelectedTake, take);
+        if (wasSelected)
+        {
+            _player.Stop();
+            _player.Unload();
+            SelectedTake = null;
+        }
+
+        Takes.Remove(take);
+        try
+        {
+            if (File.Exists(take.RawPath))
+            {
+                File.Delete(take.RawPath);
+            }
+
+            if (File.Exists(take.ProcessedPath))
+            {
+                File.Delete(take.ProcessedPath);
+            }
+
+            Status = wasSelected ? "Take discarded and playback stopped" : "Take discarded";
+        }
+        catch (Exception ex)
+        {
+            Status = "Take removed from the list; the WAV file may still remain: " + ex.Message;
+        }
+
         Changed();
     }
 
@@ -615,7 +656,11 @@ public sealed class StudioSession : IDisposable
         }
         else
         {
-            _player.Play(PlayingProcessed ? SelectedTake.ProcessedPath : SelectedTake.RawPath);
+            _player.Play(PlayingProcessed ? SelectedTake.ProcessedPath : SelectedTake.RawPath, MonitorDeviceId, MonitorVolume);
+            if (!_player.IsPlaying)
+            {
+                Status = "Could not start playback on the selected headphones";
+            }
         }
 
         Changed();

@@ -1,5 +1,6 @@
 using SonarDotNet.Components;
 using SonarDotNet.Core;
+using SonarDotNet.Core.Audio;
 using static Donkeh.UILab._;
 
 namespace SonarDotNet.Tests;
@@ -7,21 +8,21 @@ namespace SonarDotNet.Tests;
 public sealed class ComponentTests
 {
     [Fact]
-    public void StageRailShowsTheFourSignalStagesAndSelectsThem()
+    public void StageRailShowsTheFiveSignalStagesAndSelectsThem()
     {
         StudioSession session = Fx.Session();
         var page = Fx.Render(session, C<StageRail>());
 
-        Assert.Equal(4, page.FindAll(".stage-card").Count);
+        Assert.Equal(5, page.FindAll(".stage-card").Count);
         Assert.Equal("Tone", page.Find(".stage-card.is-active .stage-name").Text);
-        Assert.Contains("Four stages", page.Find(".rail-title").Text);
+        Assert.Contains("Five stages", page.Find(".rail-title").Text);
         Assert.Null(page.TryFind(".rail-spacer"));
 
         page.FindAll(".stage-card")[0].Click();
-        Assert.Equal(StudioStage.Noise, session.ActiveStage);
+        Assert.Equal(StudioStage.Clean, session.ActiveStage);
 
         Fx.Reload<StageRail>(page, session);
-        Assert.Equal("Noise", page.Find(".stage-card.is-active .stage-name").Text);
+        Assert.Equal("Clean", page.Find(".stage-card.is-active .stage-name").Text);
 
         page.FindAll(".stage-card")[2].Find(".stage-name").Click();
         Assert.Equal(StudioStage.Dynamics, session.ActiveStage);
@@ -62,16 +63,28 @@ public sealed class ComponentTests
     }
 
     [Fact]
-    public void CharacterStageExposesPitchWarmthAndSpace()
+    public void VoiceStageExposesPitchFormantResonanceBrightnessAndTexture()
     {
         StudioSession session = Fx.Session();
-        session.SelectStage(StudioStage.Character);
+        session.SelectStage(StudioStage.Voice);
         var page = Fx.Render(session, C<StageEditor>());
 
-        Assert.Equal("Character", page.Find(".editor-title").Text);
-        Assert.Equal(3, page.FindAll(".slider").Count);
+        Assert.Equal("Voice", page.Find(".editor-title").Text);
+        Assert.Equal(5, page.FindAll(".slider").Count);
         page.Input(".slider-input", "5");
         Assert.Equal(5f, session.Settings.Character.PitchSemitones);
+    }
+
+    [Fact]
+    public void SpaceStageExposesRoomAndEchoControls()
+    {
+        StudioSession session = Fx.Session();
+        session.SelectStage(StudioStage.Space);
+        var page = Fx.Render(session, C<StageEditor>());
+
+        Assert.Equal("Space", page.Find(".editor-title").Text);
+        Assert.NotNull(page.TryFind(".space-graph"));
+        Assert.Equal(4, page.FindAll(".slider").Count);
     }
 
     [Fact]
@@ -110,6 +123,39 @@ public sealed class ComponentTests
     }
 
     [Fact]
+    public void TakesCanBeDiscardedAndFilesDeleted()
+    {
+        StudioSession session = Fx.Session();
+        string folder = Path.Combine(Path.GetTempPath(), "SonarDotNetTests", Guid.NewGuid().ToString("N"));
+        Directory.CreateDirectory(folder);
+        string raw = Path.Combine(folder, "raw.wav");
+        string processed = Path.Combine(folder, "processed.wav");
+        File.WriteAllBytes(raw, [1, 2, 3]);
+        File.WriteAllBytes(processed, [4, 5, 6]);
+        session.Takes.Add(new RecordingResult(raw, processed, TimeSpan.FromSeconds(1)));
+        try
+        {
+            var page = Fx.Render(session, C<LivePanel>());
+            page.Find(".take-discard").Click();
+
+            Assert.Empty(session.Takes);
+            Assert.False(File.Exists(raw));
+            Assert.False(File.Exists(processed));
+        }
+        finally
+        {
+            try
+            {
+                Directory.Delete(folder, recursive: true);
+            }
+            catch
+            {
+                // Cleanup is not part of the assertion.
+            }
+        }
+    }
+
+    [Fact]
     public void SettingsDialogExplainsTheVirtualCableWhenOneIsPresent()
     {
         StudioSession session = Fx.Session();
@@ -128,7 +174,7 @@ public sealed class ComponentTests
         session.TogglePresets();
         var page = Fx.Render(session, C<PresetPopover>());
 
-        Assert.Equal(5, page.FindAll(".preset-row").Count);
+        Assert.Equal(9, page.FindAll(".preset-row").Count);
         Assert.True(page.Find(".preset-list").Bounds.Height > 100f);
         page.FindByText("Broadcast").Click();
 

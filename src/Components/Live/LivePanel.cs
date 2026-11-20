@@ -101,7 +101,8 @@ internal sealed class LivePanel : Component
                     ClassName = selected && !session.PlayingProcessed && session.IsPlaying ? "take-play is-on" : "take-play",
                     Title = "Play the raw take",
                     OnClick = () => session.ToggleTake(take, false),
-                }, Span(new() { ClassName = "raw-label" }, Text("RAW")))));
+                }, Span(new() { ClassName = "raw-label" }, Text("RAW"))),
+                Ui.IconButton(Icons.Trash, "Discard this take and delete both WAV files", () => session.DiscardTake(take), className: "icon-btn take-discard")));
     }
 
     private static Node Transport(StudioSession session, RecordingResult take)

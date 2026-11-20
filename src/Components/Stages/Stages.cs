@@ -17,9 +17,9 @@ internal static class Stages
     public static readonly StageInfo[] All =
     [
         new(
-            StudioStage.Noise,
+            StudioStage.Clean,
             "01",
-            "Noise",
+            "Clean",
             "Room & breath",
             "Sets the floor. Room tone and breath are eased away while your voice stays intact.",
             Icons.Wind),
@@ -38,12 +38,19 @@ internal static class Stages
             "Holds the loud moments close and lifts the quiet ones, without flattening expression.",
             Icons.Dynamics),
         new(
-            StudioStage.Character,
+            StudioStage.Voice,
             "04",
-            "Character",
-            "Warmth & space",
-            "A little harmonic weight and room. Enough to feel human, never a costume.",
-            Icons.Character),
+            "Voice",
+            "Size & character",
+            "Pitch, formants, resonance and texture. Build a different voice without leaving yours behind.",
+            Icons.Feather),
+        new(
+            StudioStage.Space,
+            "05",
+            "Space",
+            "Room & echo",
+            "Place the voice in a room, a hallway or somewhere stranger. Space is part of the character.",
+            Icons.Music),
     ];
 
     public static StageInfo Get(StudioStage stage) => All.First(info => info.Stage == stage);
