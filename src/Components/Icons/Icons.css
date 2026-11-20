@@ -1,0 +1,81 @@
+/* Font Awesome Free glyph map. Only the icons Sonus uses are declared. */
+
+@font-face {
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 700;
+    src: url("assets/fa-solid-900.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 400;
+    src: url("assets/fa-regular-400.ttf") format("truetype");
+}
+
+.fa {
+    display: inline-block;
+    font-family: "Font Awesome 6 Free";
+    font-style: normal;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+}
+
+.fa-regular {
+    font-weight: 400;
+}
+
+.fa-microphone::before { content: "\f130"; }
+.fa-microphone-lines::before { content: "\f3c9"; }
+.fa-headphones::before { content: "\f025"; }
+.fa-headset::before { content: "\f590"; }
+.fa-volume-high::before { content: "\f028"; }
+.fa-volume-low::before { content: "\f027"; }
+.fa-volume-xmark::before { content: "\f6a9"; }
+.fa-volume-off::before { content: "\f026"; }
+.fa-circle::before { content: "\f111"; }
+.fa-stop::before { content: "\f04d"; }
+.fa-play::before { content: "\f04b"; }
+.fa-pause::before { content: "\f04c"; }
+.fa-gear::before { content: "\f013"; }
+.fa-circle-question::before { content: "\f059"; }
+.fa-circle-info::before { content: "\f05a"; }
+.fa-power-off::before { content: "\f011"; }
+.fa-wind::before { content: "\f72e"; }
+.fa-chart-line::before { content: "\f201"; }
+.fa-compress::before { content: "\f066"; }
+.fa-wand-magic-sparkles::before { content: "\e2ca"; }
+.fa-wave-square::before { content: "\f83e"; }
+.fa-sliders::before { content: "\f1de"; }
+.fa-check::before { content: "\f00c"; }
+.fa-chevron-down::before { content: "\f078"; }
+.fa-chevron-right::before { content: "\f054"; }
+.fa-xmark::before { content: "\f00d"; }
+.fa-floppy-disk::before { content: "\f0c7"; }
+.fa-folder-open::before { content: "\f07c"; }
+.fa-arrow-rotate-left::before { content: "\f0e2"; }
+.fa-shield-halved::before { content: "\f3ed"; }
+.fa-bolt::before { content: "\f0e7"; }
+.fa-signal::before { content: "\f012"; }
+.fa-arrow-right::before { content: "\f061"; }
+.fa-arrow-left::before { content: "\f060"; }
+.fa-trash-can::before { content: "\f2ed"; }
+.fa-circle-nodes::before { content: "\e4e2"; }
+.fa-record-vinyl::before { content: "\f8d9"; }
+.fa-bars-staggered::before { content: "\f550"; }
+.fa-feather-pointed::before { content: "\f56b"; }
+.fa-ear-listen::before { content: "\f2a2"; }
+.fa-music::before { content: "\f001"; }
+.fa-rotate::before { content: "\f2f1"; }
+.fa-rotate-right::before { content: "\f2f9"; }
+.fa-file-audio::before { content: "\f1c7"; }
+.fa-gauge-high::before { content: "\f625"; }
+.fa-download::before { content: "\f019"; }
+.fa-upload::before { content: "\f093"; }
+.fa-plus::before { content: "\f067"; }
+.fa-minus::before { content: "\f068"; }
+.fa-ellipsis::before { content: "\f141"; }
+.fa-lock::before { content: "\f023"; }
+.fa-lock-open::before { content: "\f3c1"; }
