@@ -1,4 +1,4 @@
-name: Build and release Sonus.NET
+name: Build and release SonarDotNet
 
 on:
   push:
@@ -16,8 +16,35 @@ permissions:
 
 jobs:
   build:
-    name: Build Windows x64
-    runs-on: windows-latest
+    name: Build ${{ matrix.name }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - name: Windows x64
+            os: windows-latest
+            rid: win-x64
+            artifact: SonarDotNet-win-x64
+            archive: SonarDotNet-win-x64.zip
+
+          - name: Linux x64
+            os: ubuntu-latest
+            rid: linux-x64
+            artifact: SonarDotNet-linux-x64
+            archive: SonarDotNet-linux-x64.tar.gz
+
+          - name: macOS Apple Silicon
+            os: macos-latest
+            rid: osx-arm64
+            artifact: SonarDotNet-macos-arm64
+            archive: SonarDotNet-macos-arm64.tar.gz
+
+          - name: macOS Intel
+            os: macos-latest
+            rid: osx-x64
+            artifact: SonarDotNet-macos-x64
+            archive: SonarDotNet-macos-x64.tar.gz
 
     steps:
       - name: Check out the repository
@@ -32,7 +59,7 @@ jobs:
         run: >
           dotnet publish SonarDotNet.csproj
           --configuration Release
-          --runtime win-x64
+          --runtime ${{ matrix.rid }}
           --self-contained true
           --output publish
           -p:PublishSingleFile=true
@@ -41,15 +68,21 @@ jobs:
           -p:DebugType=None
           -p:DebugSymbols=false
 
-      - name: Package
+      - name: Package for Windows
+        if: runner.os == 'Windows'
         shell: pwsh
-        run: Compress-Archive -Path publish/* -DestinationPath "Sonus.NET-win-x64.zip" -Force
+        run: Compress-Archive -Path publish/* -DestinationPath "${{ matrix.archive }}" -Force
+
+      - name: Package for Linux and macOS
+        if: runner.os != 'Windows'
+        shell: bash
+        run: tar -czf "${{ matrix.archive }}" -C publish .
 
       - name: Upload build artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Sonus.NET-win-x64
-          path: Sonus.NET-win-x64.zip
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.archive }}
           if-no-files-found: error
 
   release:
@@ -60,7 +93,7 @@ jobs:
       contents: write
 
     steps:
-      - name: Download the build
+      - name: Download all builds
         uses: actions/download-artifact@v4
         with:
           path: dist
@@ -73,7 +106,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ inputs.tag || github.ref_name }}
-          name: Sonus.NET ${{ inputs.tag || github.ref_name }}
+          name: SonarDotNet ${{ inputs.tag || github.ref_name }}
           files: dist/*
           generate_release_notes: true
           draft: false
