@@ -1,4 +1,4 @@
-/* Sonus.NET — a calm voice studio.
+/* Sonus.NET â€” a calm voice studio.
 
    The shell is a four-row grid: identity, devices, workspace, status. The
    workspace is the four-stage signal path, the large visual editor, and the
@@ -63,11 +63,23 @@ button {
     line-height: normal;
     color: var(--text);
     background-color: transparent;
+    background-image: none;
+    box-shadow: none;
+    height: auto;
     border: 0;
     border-radius: var(--radius-sm);
     margin: 0;
     padding: 0;
     cursor: pointer;
+}
+
+/* The native hover/active rules are more specific than the base reset, so clear
+   their paint with an equal-specificity rule. Only the UA-only chrome (gradient +
+   inset shadow) is stripped here; component hover rules are boosted below. */
+button:enabled:hover,
+button:enabled:active {
+    background-image: none;
+    box-shadow: none;
 }
 
 button:disabled {
@@ -260,7 +272,7 @@ canvas {
     flex-shrink: 0;
 }
 
-.icon-btn:hover {
+button.icon-btn:hover, .icon-btn:hover {
     background-color: var(--bg-raised);
     color: var(--text);
 }
@@ -318,7 +330,7 @@ canvas {
     text-align: left;
 }
 
-.choice:hover {
+button.choice:hover, .choice:hover {
     border-color: var(--line-strong);
     background-color: #141b22;
 }
@@ -496,7 +508,7 @@ canvas {
     letter-spacing: 0.08em;
 }
 
-.live-btn:hover {
+button.live-btn:hover, .live-btn:hover {
     background-color: var(--bg-hover);
     color: var(--text);
 }
@@ -620,7 +632,7 @@ canvas {
     transition: background-color 120ms ease, border-color 120ms ease;
 }
 
-.stage-card:hover {
+button.stage-card:hover, .stage-card:hover {
     background-color: #0f1419;
 }
 
@@ -1071,7 +1083,7 @@ canvas {
     min-width: 0;
 }
 
-.band-chip:hover {
+button.band-chip:hover, .band-chip:hover {
     border-color: var(--line-strong);
 }
 
@@ -1147,7 +1159,14 @@ canvas {
     white-space: nowrap;
 }
 
-.slider-input {
+/* The default sheet's input[type="range"] rule is one specificity step above a
+   plain class, so name the element here and restate the reset globally. */
+input[type="range"] {
+    margin: 0;
+    background-color: transparent;
+}
+
+input.slider-input {
     width: 100%;
     height: 20px;
     min-height: 20px;
@@ -1348,7 +1367,7 @@ canvas {
     text-align: left;
 }
 
-.record-btn:hover {
+button.record-btn:hover, .record-btn:hover {
     border-color: var(--line-strong);
     background-color: #161f28;
 }
@@ -1455,7 +1474,7 @@ canvas {
     border-radius: 5px;
 }
 
-.take-row:hover {
+button.take-row:hover, .take-row:hover {
     background-color: #141b22;
 }
 
@@ -1566,7 +1585,7 @@ canvas {
     letter-spacing: 0.04em;
 }
 
-.transport-mode:hover {
+button.transport-mode:hover, .transport-mode:hover {
     color: var(--accent);
 }
 
@@ -1817,7 +1836,7 @@ canvas {
     opacity: 1;
 }
 
-.preset-delete:hover {
+button.preset-delete:hover, .preset-delete:hover {
     color: var(--danger);
     background-color: var(--danger-soft);
 }
@@ -1854,7 +1873,7 @@ canvas {
     font-weight: 550;
 }
 
-.btn:hover {
+button.btn:hover, .btn:hover {
     background-color: #1d2832;
     color: var(--text);
 }
@@ -1866,7 +1885,7 @@ canvas {
     font-weight: 650;
 }
 
-.btn.is-primary:hover {
+button.btn.is-primary:hover, .btn.is-primary:hover {
     background-color: var(--accent-strong);
 }
 
@@ -1874,7 +1893,7 @@ canvas {
     background-color: transparent;
 }
 
-.btn.is-quiet:hover {
+button.btn.is-quiet:hover, .btn.is-quiet:hover {
     background-color: #18212a;
 }
 
@@ -2364,7 +2383,7 @@ canvas {
     text-align: left;
 }
 
-.choice-option:hover {
+button.choice-option:hover, .choice-option:hover {
     background-color: #18212a;
 }
 
@@ -2438,7 +2457,7 @@ canvas {
     flex-shrink: 0;
 }
 
-.monitor-test:hover {
+button.monitor-test:hover, .monitor-test:hover {
     color: var(--accent);
     border-color: var(--accent-line);
     background-color: var(--accent-soft);
@@ -2488,7 +2507,7 @@ canvas {
     font-size: 8px;
 }
 
-.take-discard:hover {
+button.take-discard:hover, .take-discard:hover {
     color: var(--danger);
     background-color: var(--danger-soft);
 }
